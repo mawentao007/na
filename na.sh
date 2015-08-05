@@ -20,6 +20,7 @@ function rmAlias(){
         mark=1
         FILE=$HOME/.kv.conf
         tmpFILE=$HOME/.kv.conf~
+        touch $tmpFILE
         while read line;
         do
                 key=`echo "$line"|awk '{print $1}'`

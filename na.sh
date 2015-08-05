@@ -13,7 +13,7 @@ function add(){
         FILE=$HOME/.kv.conf
         echo "$1  $PWD" >> $FILE
 #todo check whether exist.
-        echo "Info:   add alias successfully!"
+        echo "Info:add alias successfully!"
 }
 
 function rmAlias(){
@@ -33,13 +33,12 @@ function rmAlias(){
         done < $FILE
         
         if [ $mark = 1 ]; then
-                echo "Warning:   na can not find and remove alias!"
-                rm $tmpFILE
+                echo "Warning:na can not find and remove alias!"
         else
-                echo "Info:   remove alias successfully!"
+                echo "Info:remove alias successfully!"
                 cat $tmpFILE > $FILE
-                rm $tmpFILE
         fi
+        rm $tmpFILE
 }
 
 function list(){
@@ -53,25 +52,42 @@ function list(){
 function redirectTo(){
         mark=1
         FILE=$HOME/.kv.conf
+        tmpFILE=$HOME/.kv.match
+        touch $tmpFILE
         while read line;
         do
                 key=`echo "$line"|awk '{print $1}'`
-                if [ $1 = $key ];
-                then
+                if [ $1 = $key ];then
+                        #awk 记得是单引号
                         path=`echo "$line"|awk '{print $2}'`
                         cd $path
                         mark=0
                         break
+                        #双中括号表示类型匹配
+                elif [[ $key = $1* ]];then
+                        echo $line >> $tmpFILE
                 fi
         done < $FILE
         
         if [ $mark = 1 ]; then
-                echo "Warning:   na can not find alias!"
+                if [ `cat $tmpFILE|wc -l` = 0 ];then
+                        echo "Warning:na can not find alias!"
+                elif [ `cat $tmpFILE|wc -l` = 1 ];then
+                        cd `cat $tmpFILE|awk '{print $2}'`
+                else
+                        while read line;
+                        do
+                                echo $line
+                        done < $tmpFILE
+                fi
         fi
+        rm $tmpFILE
 }
 
 function na(){
-        if [ $# = 0 ] || [ $1 = "-h" ];then
+        if [ $# = 0 ] || [ $1 = $HOME ]; then
+                cd $HOME
+        elif [ $1 = "-h" ];then
                 usage
         elif [ $1 = "-a" ]; then
                 add $2

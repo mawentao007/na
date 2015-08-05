@@ -7,7 +7,9 @@
 
 将脚本放置在$HOME目录下，在.bashrc中添加如下语句:
 
-	. na.sh  //特别注意第一个‘.’
+	. na.sh  
+   
+特别注意第一个‘.’
     
 别名的配置文件为
 	
@@ -20,4 +22,4 @@
                      -h      help
                      -a      add alias
                      -d      remove alias
-                      -l      list all alias
+                     -l      list all alias

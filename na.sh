@@ -3,10 +3,10 @@
 #必须先定义，后调用
 function usage(){
         echo " usage: na [-h|-a|-d] folderName"
-        echo "             -h      help"
-        echo "             -a      add alias"
-        echo "             -d      remove alias"
-        echo "             -l      list all alias"
+        echo "            -h      help"
+        echo "            -a      add alias"
+        echo "            -d      remove alias"
+        echo "            -l      list all alias"
 }
 
 function add(){
@@ -70,7 +70,7 @@ function redirectTo(){
 }
 
 function na(){
-        if [ $1 = "-h" ]; then 
+        if [ $# = 0 ] || [ $1 = "-h" ];then
                 usage
         elif [ $1 = "-a" ]; then
                 add $2

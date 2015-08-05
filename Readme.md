@@ -17,7 +17,7 @@
 ###使用方法
 
           usage: na [-h|-a|-d] folderName
-                      -h      help
-                      -a      add alias
-                      -d      remove alias
+                     -h      help
+                     -a      add alias
+                     -d      remove alias
                       -l      list all alias

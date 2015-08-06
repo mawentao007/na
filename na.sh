@@ -2,11 +2,11 @@
 
 #必须先定义，后调用
 function usage(){
-        echo " usage: na [-h|-a|-d] folderName"
-        echo "            -h      help"
-        echo "            -a      add alias"
-        echo "            -d      remove alias"
-        echo "            -l      list all alias"
+        echo "usage: na [-h|-a|-d] alias/folderName"
+        echo "           -h      help"
+        echo "           -a      add alias"
+        echo "           -d      remove alias"
+        echo "           -l      list all alias"
 }
 
 function add(){
@@ -49,7 +49,7 @@ function list(){
         done < $FILE
 }
 
-function redirectTo(){
+function aliasTo(){
         mark=1
         FILE=$HOME/.kv.conf
         tmpFILE=$HOME/.kv.match
@@ -71,6 +71,7 @@ function redirectTo(){
         
         if [ $mark = 1 ]; then
                 if [ `cat $tmpFILE|wc -l` = 0 ];then
+                        usage
                         echo "Warning:na can not find alias!"
                 elif [ `cat $tmpFILE|wc -l` = 1 ];then
                         cd `cat $tmpFILE|awk '{print $2}'`
@@ -84,8 +85,22 @@ function redirectTo(){
         rm $tmpFILE
 }
 
+function redirectTo(){
+
+#检查cd目标是否是当前目录文件夹
+        if [ -d $1 ];then
+                cd $1
+        else
+#使用别名文件进行切换文件夹
+                aliasTo  $1
+        fi
+}
+
 function na(){
-        if [ $# = 0 ] || [ $1 = $HOME ]; then
+        if [ $# -gt 2 ];then
+                usage
+                echo "Warning:too many arguments"
+        elif [ $# = 0 ] || [ $1 = $HOME ]; then
                 cd $HOME
         elif [ $1 = "-h" ];then
                 usage
